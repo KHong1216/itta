@@ -1,22 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { BackButton } from "./back-button";
 import { CreateCrewHeader } from "./create-crew-header";
 import { ImageUpload } from "./image-upload";
 import { CrewPreview } from "./crew-preview";
-import { cn } from "@/lib/utils";
 import type { CreateCrewFormData } from "./types";
 
 interface CreateCrewFormProps {
-  onSubmit?: (data: CreateCrewFormData) => void;
+  onSubmit?: (formData: FormData) => void | Promise<void>;
   onBack?: () => void;
 }
 
 const initialFormData: CreateCrewFormData = {
   title: "",
   image: "",
+  imageFile: null,
   category: "전시",
   maxMembers: 5,
   location: "",
@@ -26,9 +25,18 @@ const initialFormData: CreateCrewFormData = {
 export function CreateCrewForm({ onSubmit, onBack }: CreateCrewFormProps) {
   const [formData, setFormData] = useState<CreateCrewFormData>(initialFormData);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    onSubmit?.(formData);
+
+    const submitFormData = new FormData();
+    submitFormData.set("title", formData.title);
+    submitFormData.set("category", formData.category);
+    submitFormData.set("maxMembers", String(formData.maxMembers));
+    submitFormData.set("location", formData.location);
+    submitFormData.set("date", formData.date);
+    if (formData.imageFile) submitFormData.set("imageFile", formData.imageFile);
+
+    await onSubmit?.(submitFormData);
   }
 
   function updateFormData(updates: Partial<CreateCrewFormData>) {
@@ -59,7 +67,9 @@ export function CreateCrewForm({ onSubmit, onBack }: CreateCrewFormProps) {
 
             <ImageUpload
               image={formData.image}
-              onImageChange={(image) => updateFormData({ image })}
+              onImageChange={(imageFile, previewUrl) =>
+                updateFormData({ image: previewUrl, imageFile })
+              }
             />
 
             <div className="grid grid-cols-2 gap-4">

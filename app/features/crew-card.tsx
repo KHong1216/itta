@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { MapPin, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -29,10 +28,9 @@ export function CrewCard({
   return (
     <div className="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 hover:shadow-3xl transition-all duration-500">
       <div className="relative h-64 overflow-hidden">
-        <Image
+        <img
           src={image}
           alt={title}
-          fill
           className="object-cover group-hover:scale-105 transition-transform duration-700"
         />
         <div className="absolute top-6 left-6 bg-white px-4 py-1.5 rounded-full text-xs font-black text-indigo-600 shadow-xl uppercase tracking-widest">
@@ -56,12 +54,12 @@ export function CrewCard({
         <div className="flex justify-between items-center pt-6 border-t border-slate-50">
           <div className="flex items-center gap-3">
             <div className="flex -space-x-3">
-              {[...Array(3)].map((_, i) => (
+              {Array.from({ length: Math.min(3, members) }).map((_, i) => (
                 <div
                   key={i}
                   className="w-10 h-10 rounded-full border-4 border-white bg-slate-100 flex items-center justify-center overflow-hidden shadow-sm"
                 >
-                  <Image
+                  <img
                     src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${id}${i}`}
                     alt="avatar"
                     width={40}

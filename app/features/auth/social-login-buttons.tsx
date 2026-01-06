@@ -39,6 +39,8 @@ export function SocialLoginButtons({
             src="https://www.google.com/favicon.ico"
             className="w-4 h-4"
             alt="google"
+            width={16}
+            height={16}
           />
           구글
         </button>

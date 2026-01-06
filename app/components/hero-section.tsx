@@ -2,15 +2,19 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { CreateCrewForm } from "@/features/crew-create/create-crew-form";
 import { cn } from "@/lib/utils";
+import { getCurrentUserInfo } from "@/lib/auth";
+import { createCrewAction } from "@/lib/crew-actions";
 
 interface HeroSectionProps {
   badgeText?: string;
@@ -33,11 +37,26 @@ export function HeroSection({
   primaryButtonHref = "/explore",
   secondaryButtonText = "크루 만들기",
 }: HeroSectionProps) {
+  const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  function handleSubmit() {
-    // TODO: 크루 생성 로직
-    setIsDialogOpen(false);
+  async function handleSubmit(formData: FormData) {
+    try {
+      await createCrewAction(formData);
+      setIsDialogOpen(false);
+      alert("크루가 생성됐어요.");
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "크루 생성에 실패했어요.");
+    }
+  }
+
+  async function handleCreateClick() {
+    const user = await getCurrentUserInfo();
+    if (!user) {
+      router.push("/?login=1&openCreate=1");
+      return;
+    }
+    setIsDialogOpen(true);
   }
 
   return (
@@ -79,6 +98,7 @@ export function HeroSection({
           </Link>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger
+              onClick={handleCreateClick}
               className={cn(
                 "h-[60px] px-10 py-5 bg-white border-2 border-slate-200 hover:border-indigo-600 text-slate-700 hover:text-indigo-600 rounded-2xl font-bold text-xl transition-all transform hover:-translate-y-1 inline-flex items-center justify-center gap-2 whitespace-nowrap shrink-0"
               )}
@@ -87,6 +107,7 @@ export function HeroSection({
               {secondaryButtonText}
             </DialogTrigger>
             <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto p-0">
+              <DialogTitle className="sr-only">크루 만들기</DialogTitle>
               <CreateCrewForm
                 onSubmit={handleSubmit}
                 onBack={() => setIsDialogOpen(false)}

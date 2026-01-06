@@ -6,6 +6,7 @@ import { CrewGrid } from "@/features/explore/crew-grid";
 import { EmptyState } from "@/features/explore/empty-state";
 import type { Category } from "@/lib/data/categories";
 import type { Crew } from "@/lib/data/crews";
+import { joinCrewAction } from "@/lib/crew-actions";
 
 interface ExploreContentProps {
   initialCrews: Crew[];
@@ -25,9 +26,14 @@ export function ExploreContent({
     return initialCrews.filter((crew) => crew.category === activeCategory);
   }, [activeCategory, initialCrews]);
 
-  function handleJoinCrew(crewId: string | number) {
-    // TODO: 크루 참여 로직
-    console.log("크루 참여:", crewId);
+  async function handleJoinCrew(crewId: string | number) {
+    try {
+      const result = await joinCrewAction(String(crewId));
+      if (result?.alreadyJoined) alert("이미 참여중인 크루예요.");
+      else alert("참여했어요.");
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "참여에 실패했어요.");
+    }
   }
 
   return (

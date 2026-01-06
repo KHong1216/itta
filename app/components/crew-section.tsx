@@ -72,7 +72,7 @@ export function CrewSection({
             취향을 잇다, 마음을 잇다.
           </h2>
           <p className="text-xl text-slate-500 leading-relaxed mb-16">
-            '잇다'는 단순히 한 번 만나는 것에 그치지 않습니다.
+            &apos;잇다&apos;는 단순히 한 번 만나는 것에 그치지 않습니다.
             <br />
             좋아하는 것이 닮은 사람들을 발견하고, <br />
             그 찰나의 순간을 소중한 인연의 시작으로 이어줍니다.

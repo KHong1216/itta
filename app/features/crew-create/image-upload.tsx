@@ -6,11 +6,12 @@ import Image from "next/image";
 
 interface ImageUploadProps {
   image: string;
-  onImageChange: (imageUrl: string) => void;
+  onImageChange: (imageFile: File, previewUrl: string) => void;
 }
 
 export function ImageUpload({ image, onImageChange }: ImageUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const lastPreviewUrlRef = useRef<string | null>(null);
 
   function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -28,12 +29,10 @@ export function ImageUpload({ image, onImageChange }: ImageUploadProps) {
       return;
     }
 
-    // Create preview URL
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      onImageChange(reader.result as string);
-    };
-    reader.readAsDataURL(file);
+    const previewUrl = URL.createObjectURL(file);
+    if (lastPreviewUrlRef.current) URL.revokeObjectURL(lastPreviewUrlRef.current);
+    lastPreviewUrlRef.current = previewUrl;
+    onImageChange(file, previewUrl);
   }
 
   return (
