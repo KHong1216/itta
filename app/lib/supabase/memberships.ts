@@ -19,6 +19,36 @@ export interface JoinCrewResult {
   alreadyJoined: boolean;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function isIttaCrewRow(value: unknown): value is IttaCrewRow {
+  if (!isRecord(value)) return false;
+
+  return (
+    typeof value.id === "string" &&
+    typeof value.title === "string" &&
+    typeof value.image_url === "string" &&
+    typeof value.category === "string" &&
+    typeof value.location_text === "string" &&
+    typeof value.scheduled_at_text === "string" &&
+    typeof value.max_members === "number" &&
+    typeof value.members_count === "number" &&
+    typeof value.created_by === "string" &&
+    typeof value.created_at === "string"
+  );
+}
+
+function pickCrew(value: unknown): IttaCrewRow | null {
+  if (Array.isArray(value)) {
+    const first = value[0];
+    return isIttaCrewRow(first) ? first : null;
+  }
+  if (isIttaCrewRow(value)) return value;
+  return null;
+}
+
 export async function joinCrew(crewId: string): Promise<JoinCrewResult> {
   const supabase = await createClient();
 
@@ -42,7 +72,14 @@ export async function joinCrew(crewId: string): Promise<JoinCrewResult> {
   return { alreadyJoined: false };
 }
 
-export async function fetchMyCrews() {
+interface FetchMyCrewsRow {
+  crew_id: string | null;
+  role: string | null;
+  joined_at: string | null;
+  crew: unknown;
+}
+
+export async function fetchMyCrews(): Promise<MyCrewMembership[]> {
   const supabase = await createClient();
 
   const {
@@ -51,7 +88,7 @@ export async function fetchMyCrews() {
   } = await supabase.auth.getUser();
 
   if (userError) throw new Error(userError.message);
-  if (!user) return [] as MyCrewMembership[];
+  if (!user) return [];
 
   const { data, error } = await supabase
     .from("itta_crew_memberships")
@@ -63,12 +100,22 @@ export async function fetchMyCrews() {
 
   if (error) throw new Error(error.message);
 
-  return (data ?? []).map((row) => ({
-    crewId: row.crew_id as string,
-    role: row.role as string,
-    joinedAt: row.joined_at as string,
-    crew: row.crew as IttaCrewRow,
-  })) as MyCrewMembership[];
+  const rows = (data ?? []) as unknown as FetchMyCrewsRow[];
+
+  return rows.flatMap((row) => {
+    const crew = pickCrew(row.crew);
+    if (!crew) return [];
+    if (!row.crew_id || !row.role || !row.joined_at) return [];
+
+    return [
+      {
+        crewId: row.crew_id,
+        role: row.role,
+        joinedAt: row.joined_at,
+        crew,
+      },
+    ];
+  });
 }
 
 
