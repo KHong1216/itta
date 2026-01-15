@@ -25,7 +25,6 @@ const remotePatterns: RemotePattern[] = supabaseHostname
   : baseRemotePatterns;
 
 const nextConfig: NextConfig = {
-  swcMinify: true,
   experimental: {
     serverActions: {
       bodySizeLimit: "6mb",
