@@ -118,4 +118,26 @@ export async function fetchMyCrews(): Promise<MyCrewMembership[]> {
   });
 }
 
+export async function isMemberOfCrew(crewId: string) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError) throw new Error(userError.message);
+  if (!user) return false;
+
+  const { data, error } = await supabase
+    .from("itta_crew_memberships")
+    .select("crew_id")
+    .eq("crew_id", crewId)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (error) throw new Error(error.message);
+  return Boolean(data);
+}
+
 

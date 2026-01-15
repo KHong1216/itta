@@ -44,6 +44,7 @@ export async function createCrewAction(formData: FormData) {
   const category = getString(formData, "category");
   const location = getString(formData, "location");
   const date = getString(formData, "date");
+  const description = getString(formData, "description");
   const maxMembers = getInt(formData, "maxMembers", 2);
 
   const supabase = await createClient();
@@ -68,6 +69,7 @@ export async function createCrewAction(formData: FormData) {
     locationText: location,
     scheduledAtText: date,
     maxMembers,
+    description,
   });
 
   revalidatePath("/");

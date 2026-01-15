@@ -1,4 +1,5 @@
 import { MapPin, Calendar } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -27,7 +28,7 @@ export function CrewCard({
 }: CrewCardProps) {
   return (
     <div className="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 hover:shadow-3xl transition-all duration-500">
-      <div className="relative h-64 overflow-hidden">
+      <Link href={`/crews/${id}`} className="block relative h-64 overflow-hidden">
         <img
           src={image}
           alt={title}
@@ -36,11 +37,13 @@ export function CrewCard({
         <div className="absolute top-6 left-6 bg-white px-4 py-1.5 rounded-full text-xs font-black text-indigo-600 shadow-xl uppercase tracking-widest">
           {category}
         </div>
-      </div>
+      </Link>
       <div className="p-8">
-        <h3 className="text-2xl font-bold text-slate-900 mb-4 line-clamp-1 group-hover:text-indigo-600 transition-colors">
-          {title}
-        </h3>
+        <Link href={`/crews/${id}`} className="block">
+          <h3 className="text-2xl font-bold text-slate-900 mb-4 line-clamp-1 group-hover:text-indigo-600 transition-colors">
+            {title}
+          </h3>
+        </Link>
         <div className="space-y-3 mb-8">
           <div className="flex items-center gap-2 text-slate-500 font-medium">
             <MapPin className="w-4 h-4 text-indigo-400" />

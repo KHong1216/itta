@@ -20,6 +20,7 @@ const initialFormData: CreateCrewFormData = {
   maxMembers: 5,
   location: "",
   date: "",
+  description: "",
 };
 
 export function CreateCrewForm({ onSubmit, onBack }: CreateCrewFormProps) {
@@ -34,6 +35,7 @@ export function CreateCrewForm({ onSubmit, onBack }: CreateCrewFormProps) {
     submitFormData.set("maxMembers", String(formData.maxMembers));
     submitFormData.set("location", formData.location);
     submitFormData.set("date", formData.date);
+    submitFormData.set("description", formData.description);
     if (formData.imageFile) submitFormData.set("imageFile", formData.imageFile);
 
     await onSubmit?.(submitFormData);
@@ -130,6 +132,21 @@ export function CreateCrewForm({ onSubmit, onBack }: CreateCrewFormProps) {
                   className="w-full px-6 py-4 bg-slate-50 rounded-2xl outline-none font-medium"
                 />
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-900 ml-1">
+                자세한 설명
+              </label>
+              <textarea
+                placeholder="예) 초면이라도 어색하지 않게 가벼운 대화로 시작해요. 전시 관람 후 근처 카페에서 1시간 정도 더 이야기해요."
+                value={formData.description}
+                onChange={(e) => updateFormData({ description: e.target.value })}
+                className="w-full px-6 py-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 font-medium transition-all min-h-28 resize-none"
+              />
+              <p className="text-xs text-slate-500 ml-1">
+                장소/시간/분위기/준비물 같은 정보를 적어주면 참여가 쉬워져요.
+              </p>
             </div>
 
             <button

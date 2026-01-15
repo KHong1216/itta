@@ -6,5 +6,6 @@ export interface CreateCrewFormData {
   maxMembers: number;
   location: string;
   date: string;
+  description: string;
 }
 

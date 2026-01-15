@@ -9,6 +9,7 @@ export interface IttaCrewRow {
   scheduled_at_text: string;
   max_members: number;
   members_count: number;
+  description: string;
   created_by: string;
   created_at: string;
 }
@@ -20,6 +21,7 @@ export interface CreateCrewInput {
   locationText: string;
   scheduledAtText: string;
   maxMembers: number;
+  description: string;
 }
 
 export async function fetchCrews() {
@@ -28,12 +30,27 @@ export async function fetchCrews() {
   const { data, error } = await supabase
     .from("itta_crews")
     .select(
-      "id,title,image_url,category,location_text,scheduled_at_text,max_members,members_count,created_by,created_at"
+      "id,title,image_url,category,location_text,scheduled_at_text,max_members,members_count,description,created_by,created_at"
     )
     .order("created_at", { ascending: false });
 
   if (error) throw new Error(error.message);
   return (data ?? []) as IttaCrewRow[];
+}
+
+export async function fetchCrewById(crewId: string) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("itta_crews")
+    .select(
+      "id,title,image_url,category,location_text,scheduled_at_text,max_members,members_count,description,created_by,created_at"
+    )
+    .eq("id", crewId)
+    .single();
+
+  if (error) throw new Error(error.message);
+  return data as IttaCrewRow;
 }
 
 export async function createCrew(input: CreateCrewInput) {
@@ -46,6 +63,7 @@ export async function createCrew(input: CreateCrewInput) {
     p_location_text: input.locationText,
     p_scheduled_at_text: input.scheduledAtText,
     p_max_members: input.maxMembers,
+    p_description: input.description,
   });
 
   if (error) throw new Error(error.message);
