@@ -25,6 +25,7 @@ const remotePatterns: RemotePattern[] = supabaseHostname
   : baseRemotePatterns;
 
 const nextConfig: NextConfig = {
+  swcMinify: true,
   experimental: {
     serverActions: {
       bodySizeLimit: "6mb",
@@ -32,6 +33,37 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns,
+  },
+  async headers() {
+    return [
+      {
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/_next/image",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/images/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
   },
 };
 

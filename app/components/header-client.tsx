@@ -57,22 +57,29 @@ export function HeaderClient({ initialUserEmail }: HeaderClientProps) {
   useEffect(() => {
     if (!currentUserEmail) return;
 
-    let hasTabSession = false;
-    try {
-      hasTabSession = sessionStorage.getItem(ITTA_TAB_SESSION_KEY) === "1";
-    } catch {
-      // ignore
+    function handlePageShow() {
+      let hasTabSession = false;
+      try {
+        hasTabSession = sessionStorage.getItem(ITTA_TAB_SESSION_KEY) === "1";
+      } catch {
+        // ignore
+      }
+
+      if (hasTabSession) return;
+
+      void (async () => {
+        setCurrentUserEmail(null);
+        await signOut();
+        router.refresh();
+      })();
     }
 
-    if (hasTabSession) return;
+    window.addEventListener("pageshow", handlePageShow);
 
-    void (async () => {
-      setCurrentUserEmail(null);
-      await signOut();
-      router.refresh();
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => {
+      window.removeEventListener("pageshow", handlePageShow);
+    };
+  }, [currentUserEmail, router]);
 
   function clearHomeQuery() {
     if (!searchParams.size) return;

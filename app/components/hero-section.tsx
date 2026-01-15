@@ -75,7 +75,7 @@ export function HeroSection({
         </h1>
 
         {/* Description */}
-        <p className="text-lg md:text-2xl text-slate-500 max-w-3xl mx-auto mb-12 leading-relaxed">
+        <p className="text-lg md:text-2xl text-slate-600 max-w-3xl mx-auto mb-12 leading-relaxed">
           {description}
           <br />
           복잡한 관계의 부담은 덜어내고,{" "}

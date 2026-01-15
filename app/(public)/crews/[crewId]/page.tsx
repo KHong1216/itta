@@ -24,15 +24,15 @@ export default async function CrewDetailPage({ params }: PageProps) {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-12 animate-in fade-in duration-500">
-      <div className="flex items-center justify-between mb-6">
+      <div className="grid grid-cols-[1fr_auto] items-center mb-6">
         <Link
           href="/explore"
-          className="inline-flex items-center gap-1 -ml-3 px-3 py-2 rounded-xl text-sm font-black text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 transition-colors"
+          className="inline-flex items-center justify-self-start gap-1 px-3 py-2 rounded-xl text-sm font-black text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 transition-colors"
         >
           <ChevronLeft className="w-4 h-4" />
           크루 목록
         </Link>
-        <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-slate-100 text-sm font-black text-slate-700">
+        <div className="inline-flex items-center justify-self-end px-3 py-1.5 rounded-full bg-slate-100 text-sm font-black text-slate-700">
           {crew.members_count}/{crew.max_members}
         </div>
       </div>

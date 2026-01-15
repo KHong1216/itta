@@ -1,4 +1,5 @@
 import { MapPin, Calendar } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -29,10 +30,13 @@ export function CrewCard({
   return (
     <div className="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 hover:shadow-3xl transition-all duration-500">
       <Link href={`/crews/${id}`} className="block relative h-64 overflow-hidden">
-        <img
+        <Image
           src={image}
           alt={title}
+          fill
           className="object-cover group-hover:scale-105 transition-transform duration-700"
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          priority={false}
         />
         <div className="absolute top-6 left-6 bg-white px-4 py-1.5 rounded-full text-xs font-black text-indigo-600 shadow-xl uppercase tracking-widest">
           {category}
@@ -64,15 +68,17 @@ export function CrewCard({
                 >
                   <img
                     src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${id}${i}`}
-                    alt="avatar"
+                    alt=""
+                    aria-hidden="true"
                     width={40}
                     height={40}
+                    loading="lazy"
                     className="w-full h-full"
                   />
                 </div>
               ))}
             </div>
-            <span className="text-sm font-bold text-slate-400">
+            <span className="text-sm font-bold text-slate-600">
               {members}/{maxMembers}
             </span>
           </div>

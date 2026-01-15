@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useDeferredValue, useState, useMemo } from "react";
 import { CategoryFilter } from "@/features/explore/category-filter";
 import { CrewGrid } from "@/features/explore/crew-grid";
 import { EmptyState } from "@/features/explore/empty-state";
@@ -18,13 +18,14 @@ export function ExploreContent({
   categories,
 }: ExploreContentProps) {
   const [activeCategory, setActiveCategory] = useState("전체");
+  const deferredCategory = useDeferredValue(activeCategory);
 
   const filteredCrews = useMemo(() => {
-    if (activeCategory === "전체") {
+    if (deferredCategory === "전체") {
       return initialCrews;
     }
-    return initialCrews.filter((crew) => crew.category === activeCategory);
-  }, [activeCategory, initialCrews]);
+    return initialCrews.filter((crew) => crew.category === deferredCategory);
+  }, [deferredCategory, initialCrews]);
 
   async function handleJoinCrew(crewId: string | number) {
     try {
