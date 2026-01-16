@@ -68,7 +68,7 @@ export function CrewCard({
         </div>
         <div className="flex justify-between items-center pt-6 border-t border-slate-50">
           <div className="flex items-center gap-3">
-            <div className="flex -space-x-3" aria-label={`${members}명 참여 중`}>
+            <div className="flex -space-x-3" role="group" aria-label={`${members}명 참여 중`}>
               {Array.from({ length: Math.min(3, members) }).map((_, i) => (
                 <div
                   key={i}
