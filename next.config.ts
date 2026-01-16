@@ -25,6 +25,9 @@ const remotePatterns: RemotePattern[] = supabaseHostname
   : baseRemotePatterns;
 
 const nextConfig: NextConfig = {
+  compress: true,
+  poweredByHeader: false,
+  reactStrictMode: true,
   experimental: {
     serverActions: {
       bodySizeLimit: "6mb",
@@ -35,6 +38,15 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, must-revalidate",
+          },
+        ],
+      },
       {
         source: "/_next/static/:path*",
         headers: [

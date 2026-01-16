@@ -1,20 +1,41 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { CreateCrewForm } from "@/features/crew-create/create-crew-form";
 import { cn } from "@/lib/utils";
 import { getCurrentUserInfo } from "@/lib/auth";
 import { createCrewAction } from "@/lib/crew-actions";
+
+const Dialog = dynamic(
+  () => import("@/components/ui/dialog").then((mod) => ({ default: mod.Dialog })),
+  { ssr: false }
+);
+
+const DialogContent = dynamic(
+  () => import("@/components/ui/dialog").then((mod) => ({ default: mod.DialogContent })),
+  { ssr: false }
+);
+
+const DialogTitle = dynamic(
+  () => import("@/components/ui/dialog").then((mod) => ({ default: mod.DialogTitle })),
+  { ssr: false }
+);
+
+const DialogTrigger = dynamic(
+  () => import("@/components/ui/dialog").then((mod) => ({ default: mod.DialogTrigger })),
+  { ssr: false }
+);
+
+const CreateCrewForm = dynamic(
+  () => import("@/features/crew-create/create-crew-form").then((mod) => ({
+    default: mod.CreateCrewForm,
+  })),
+  { ssr: false }
+);
 
 interface HeroSectionProps {
   badgeText?: string;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LinkIcon } from "lucide-react";
@@ -11,17 +12,43 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { LoginModal } from "@/features/auth/login-modal";
-import { CreateCrewForm } from "@/features/crew-create/create-crew-form";
 import { createCrewAction } from "@/lib/crew-actions";
 import { cn } from "@/lib/utils";
 import { signInWithEmail, signOut } from "@/lib/auth";
+
+const Dialog = dynamic(
+  () => import("@/components/ui/dialog").then((mod) => ({ default: mod.Dialog })),
+  { ssr: false }
+);
+
+const DialogContent = dynamic(
+  () => import("@/components/ui/dialog").then((mod) => ({ default: mod.DialogContent })),
+  { ssr: false }
+);
+
+const DialogTitle = dynamic(
+  () => import("@/components/ui/dialog").then((mod) => ({ default: mod.DialogTitle })),
+  { ssr: false }
+);
+
+const DialogTrigger = dynamic(
+  () => import("@/components/ui/dialog").then((mod) => ({ default: mod.DialogTrigger })),
+  { ssr: false }
+);
+
+const LoginModal = dynamic(
+  () => import("@/features/auth/login-modal").then((mod) => ({
+    default: mod.LoginModal,
+  })),
+  { ssr: false }
+);
+
+const CreateCrewForm = dynamic(
+  () => import("@/features/crew-create/create-crew-form").then((mod) => ({
+    default: mod.CreateCrewForm,
+  })),
+  { ssr: false }
+);
 
 interface HeaderClientProps {
   initialUserEmail: string | null;
