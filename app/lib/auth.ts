@@ -32,7 +32,7 @@ export async function signUpWithEmail(
         password,
         options: {
             data: {
-                nickname: trimmedNickname,
+                nickname: trimmedNickname,ㄹ
             },
         },
     });
