@@ -34,7 +34,7 @@ export function CrewSection({
             <h2 className="text-4xl font-black text-slate-900 tracking-tight">
               함께 이을 크루
             </h2>
-            <p className="text-slate-500 mt-3 text-lg">
+            <p className="text-slate-700 mt-3 text-lg">
               지금 이 순간, 당신과 같은 곳을 바라보는 사람들
             </p>
           </div>
@@ -44,12 +44,12 @@ export function CrewSection({
               "text-indigo-600 font-bold flex items-center gap-1 hover:gap-2 transition-all bg-transparent hover:bg-transparent shadow-none p-0 h-auto"
             )}
           >
-            더 보기 <ArrowRight className="w-5 h-5" />
+            더 보기 <ArrowRight className="w-5 h-5" aria-hidden="true" />
           </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {crews.map((crew) => (
+          {crews.map((crew, index) => (
             <CrewCard
               key={crew.id}
               id={crew.id}
@@ -61,6 +61,7 @@ export function CrewSection({
               members={crew.members}
               maxMembers={crew.maxMembers}
               onJoin={() => onJoinCrew?.(crew.id)}
+              priority={index < 3}
             />
           ))}
         </div>
@@ -71,7 +72,7 @@ export function CrewSection({
           <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-8">
             취향을 잇다, 마음을 잇다.
           </h2>
-          <p className="text-xl text-slate-500 leading-relaxed mb-16">
+          <p className="text-xl text-slate-700 leading-relaxed mb-16">
             &apos;잇다&apos;는 단순히 한 번 만나는 것에 그치지 않습니다.
             <br />
             좋아하는 것이 닮은 사람들을 발견하고, <br />
@@ -81,20 +82,20 @@ export function CrewSection({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div className="bg-white p-10 rounded-[2.5rem] shadow-sm text-left hover:shadow-xl transition-all">
               <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6">
-                <Heart className="w-8 h-8 text-indigo-600" />
+                <Heart className="w-8 h-8 text-indigo-600" aria-hidden="true" />
               </div>
-              <h4 className="text-2xl font-bold mb-4">가벼운 마음, 깊은 취향</h4>
-              <p className="text-slate-500 leading-relaxed">
+              <h3 className="text-2xl font-bold mb-4">가벼운 마음, 깊은 취향</h3>
+              <p className="text-slate-700 leading-relaxed">
                 준비물은 오직 당신의 취향입니다. 부담 없는 마음으로 오늘의 크루가
                 되어보세요.
               </p>
             </div>
             <div className="bg-white p-10 rounded-[2.5rem] shadow-sm text-left hover:shadow-xl transition-all">
               <div className="w-14 h-14 bg-rose-50 rounded-2xl flex items-center justify-center mb-6">
-                <Sparkles className="w-8 h-8 text-rose-500" />
+                <Sparkles className="w-8 h-8 text-rose-600" aria-hidden="true" />
               </div>
-              <h4 className="text-2xl font-bold mb-4">연결의 가능성</h4>
-              <p className="text-slate-500 leading-relaxed">
+              <h3 className="text-2xl font-bold mb-4">연결의 가능성</h3>
+              <p className="text-slate-700 leading-relaxed">
                 좋은 대화는 좋은 관계로 이어집니다. 당신의 오늘이 누군가에겐 잊지
                 못할 시작이 될 수 있어요.
               </p>

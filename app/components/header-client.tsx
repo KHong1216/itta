@@ -170,12 +170,14 @@ export function HeaderClient({ initialUserEmail }: HeaderClientProps) {
             <Link
               href="/"
               className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center"
+              aria-label="잇다 ITTA 홈으로 이동"
             >
-              <LinkIcon className="w-5 h-5 text-white" />
+              <LinkIcon className="w-5 h-5 text-white" aria-hidden="true" />
             </Link>
             <Link
               href="/"
               className="text-2xl font-black text-slate-900 tracking-tighter"
+              aria-label="잇다 ITTA 홈으로 이동"
             >
               잇다<span className="text-indigo-600">ITTA</span>
             </Link>

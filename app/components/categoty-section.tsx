@@ -29,7 +29,7 @@ export function CategorySection({
               "flex items-center gap-2 px-8 py-4 rounded-2xl font-bold transition-all whitespace-nowrap",
               activeCategory === cat.name
                 ? "bg-slate-900 text-white shadow-lg scale-105"
-                : "bg-slate-50 text-slate-500 hover:bg-slate-100"
+                : "bg-slate-50 text-slate-700 hover:bg-slate-100"
             )}
           >
             {cat.icon}
