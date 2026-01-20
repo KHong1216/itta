@@ -39,11 +39,41 @@ async function uploadCrewImage(params: { userId: string; file: File }) {
   return data.publicUrl;
 }
 
+function convertKSTToUTC(dateTimeLocal: string): string {
+  if (!dateTimeLocal) return "";
+  
+  const localDate = new Date(dateTimeLocal);
+  
+  const kstOffset = 9 * 60;
+  const utc = localDate.getTime() - kstOffset * 60000;
+  const utcDate = new Date(utc);
+  
+  return utcDate.toISOString();
+}
+
+function formatKSTDateTime(dateTimeLocal: string): string {
+  if (!dateTimeLocal) return "";
+  
+  const localDate = new Date(dateTimeLocal);
+  const kstOffset = 9 * 60;
+  const kstTime = localDate.getTime() + kstOffset * 60000;
+  const kstDate = new Date(kstTime);
+  
+  return kstDate.toLocaleString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    weekday: "short",
+  });
+}
+
 export async function createCrewAction(formData: FormData) {
   const title = getString(formData, "title");
   const category = getString(formData, "category");
   const location = getString(formData, "location");
-  const date = getString(formData, "date");
+  const dateTimeLocal = getString(formData, "date");
   const description = getString(formData, "description");
   const maxMembers = getInt(formData, "maxMembers", 2);
 
@@ -62,12 +92,16 @@ export async function createCrewAction(formData: FormData) {
       ? await uploadCrewImage({ userId: user.id, file: imageFile })
       : "";
 
+  const scheduledAt = convertKSTToUTC(dateTimeLocal);
+  const scheduledAtText = formatKSTDateTime(dateTimeLocal);
+
   const crew = await createCrew({
     title,
     imageUrl,
     category,
     locationText: location,
-    scheduledAtText: date,
+    scheduledAtText,
+    scheduledAt,
     maxMembers,
     description,
   });

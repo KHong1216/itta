@@ -1,5 +1,7 @@
 "use client";
 
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 import { CrewCard } from "@/features/crew-card";
 import type { CreateCrewFormData } from "./types";
 
@@ -17,6 +19,21 @@ function getCategoryImage(category: string): string {
   return categoryImages[category] || categoryImages["전시"];
 }
 
+function formatDateTime(dateTimeLocal: string): string {
+  if (!dateTimeLocal) return "일시를 입력하세요";
+  
+  try {
+    const date = new Date(dateTimeLocal);
+    const kstOffset = 9 * 60;
+    const kstTime = date.getTime() + kstOffset * 60000;
+    const kstDate = new Date(kstTime);
+    
+    return format(kstDate, "yyyy년 M월 d일 (EEE) HH:mm", { locale: ko });
+  } catch {
+    return "일시를 입력하세요";
+  }
+}
+
 export function CrewPreview({ formData }: CrewPreviewProps) {
   return (
     <div className="lg:col-span-2 space-y-6">
@@ -29,7 +46,7 @@ export function CrewPreview({ formData }: CrewPreviewProps) {
             category={formData.category || "전시"}
             title={formData.title || "크루 제목을 입력하세요"}
             location={formData.location || "장소를 입력하세요"}
-            date={formData.date || "일시를 입력하세요"}
+            date={formatDateTime(formData.date)}
             members={1}
             maxMembers={formData.maxMembers || 5}
           />
